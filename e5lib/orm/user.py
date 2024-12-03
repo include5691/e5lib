@@ -2,6 +2,7 @@ import time
 from sqlalchemy import Column, Integer, String
 
 class User:
+    """A mixin class to handle user data denormalization in ORM models"""
     __tablename__ = 'users'
     
     id = Column(Integer, primary_key=True)
