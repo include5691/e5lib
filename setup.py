@@ -8,5 +8,6 @@ setup(
     packages=find_packages(),
     install_requires=[
         'sqlalchemy',
+        'psycopg2-binary',
     ],
 )
