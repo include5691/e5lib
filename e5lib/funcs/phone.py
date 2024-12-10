@@ -5,8 +5,6 @@ def phone_purge(phone: str) -> str | None:
     Add 7 to the beginning of the number has 10 digits  
     Support only Russian ans Kazakhstan phone numbers
     """
-    if not phone or not isinstance(phone, str):
-        return None
     phone = ''.join(filter(str.isdigit, phone))
     l = len(phone)
     if l > 11 or l < 10:
@@ -33,8 +31,6 @@ def create_phone_vars(phone: str, formats: str) -> list[str] | None:
     - `4`: 8XXXXXXXXXX
     - `5`: XXXXXXXXXX
     """
-    if not formats or not isinstance(formats, str):
-        raise ValueError("formats is empty or not a string")
     phone = phone_purge(phone)
     if not phone:
         return None
