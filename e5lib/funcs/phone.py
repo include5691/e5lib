@@ -5,9 +5,13 @@ def phone_purge(phone: str) -> str | None:
     Add 7 to the beginning of the number has 10 digits  
     Support only Russian ans Kazakhstan phone numbers
     """
+    if not phone or not isinstance(phone, str):
+        return None
     phone = ''.join(filter(str.isdigit, phone))
     l = len(phone)
-    if l > 11 or l < 10:
+    if l > 12 or l < 10:
+        return None
+    if l == 12 and phone[:3] not in ["380", "375"]: # 380 - Ukraine, 375 - Belarus
         return None
     if l == 10 and phone[0] == "9":
         phone = "7" + phone
