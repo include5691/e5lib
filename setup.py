@@ -9,5 +9,6 @@ setup(
     install_requires=[
         'sqlalchemy',
         'psycopg2-binary',
+        'au_b24'
     ],
 )
