@@ -35,8 +35,7 @@ def create_phone_vars(phone: str, formats: str) -> list[str] | None:
     - `4`: 8XXXXXXXXXX
     - `5`: XXXXXXXXXX
     """
-    phone = phone_purge(phone)
-    if not phone:
+    if phone[0] != "7":
         return None
     phones = [phone]
     if '*' in formats:
