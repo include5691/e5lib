@@ -27,3 +27,33 @@ def working_loop(func):
                     thread.join()
             time.sleep(60)
     return wrapper
+
+
+def daily_loop(start_time: str):
+    """
+    Decorator that runs a function once in a day at a specific time
+
+    :param func: Function to run in a loop
+    :param start_time: start time in format HH:MM
+    """
+    try:
+        start_hour, start_minute = start_time.split(':')
+        start_hour = int(start_hour)
+        start_minute = int(start_minute)
+    except ValueError:
+        raise ValueError("Invalid time format")
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            is_executed = False
+            while True:
+                current_hour = int(time.strftime("%H"))
+                current_minute = int(time.strftime("%M"))
+                if current_hour == start_hour and current_minute == start_minute:
+                    if not is_executed:
+                        is_executed = True
+                        func(*args, **kwargs)
+                else:
+                    is_executed = False
+                time.sleep(5)
+        return wrapper
+    return decorator
