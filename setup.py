@@ -10,6 +10,7 @@ setup(
         'sqlalchemy',
         'psycopg2-binary',
         'au_b24',
-        'argparse'
+        'argparse',
+        'cachetools'
     ],
 )
