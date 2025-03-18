@@ -28,8 +28,7 @@ def working_loop(func):
             time.sleep(60)
     return wrapper
 
-
-def daily_loop(start_time: str):
+def daily_loop(start_time: str, update_now: bool = False):
     """
     Decorator that runs a function once in a day at a specific time
 
@@ -44,11 +43,13 @@ def daily_loop(start_time: str):
         raise ValueError("Invalid time format")
     def decorator(func):
         def wrapper(*args, **kwargs):
+            nonlocal update_now
             is_executed = False
             while True:
                 current_hour = int(time.strftime("%H"))
                 current_minute = int(time.strftime("%M"))
-                if current_hour == start_hour and current_minute == start_minute:
+                if current_hour == start_hour and current_minute == start_minute or update_now:
+                    update_now = False
                     if not is_executed:
                         is_executed = True
                         func(*args, **kwargs)
