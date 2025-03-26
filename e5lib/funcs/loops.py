@@ -1,6 +1,35 @@
 import time
 from threading import Event, Thread
+from typing_extensions import deprecated
 
+def work_loop(start: int = 9, end: int = 20):
+    """
+    Decorator that runs a function in a loop between a start and end time using a thread and event control
+    
+    :param func: Function to run in a loop
+    :param start: Start time in hours, 9 by default
+    :param end: End time in hours, 20 by default
+    """
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            event = Event()
+            event.set()
+            while True:
+                if start <= int(time.strftime("%H")) <= end:
+                    if event.is_set():
+                        event.clear()
+                        kwargs["event"] = event
+                        thread = Thread(target=func, args=args, kwargs=kwargs)
+                        thread.start()
+                else:
+                    if not event.is_set():
+                        event.set()
+                        thread.join()
+                time.sleep(60)
+        return wrapper
+    return decorator
+
+@deprecated("Use work_loop instead")
 def working_loop(func):
     """
     Decorator that runs a function in a loop between a start and end time using a thread and event control
