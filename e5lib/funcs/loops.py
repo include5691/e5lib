@@ -2,20 +2,42 @@ import time
 from threading import Event, Thread
 from typing_extensions import deprecated
 
-def work_loop(start: int = 9, end: int = 20):
+def work_loop(start: int | str = 9, end: int | str = 20):
     """
     Decorator that runs a function in a loop between a start and end time using a thread and event control
     
     :param func: Function to run in a loop
-    :param start: Start time in hours, 9 by default
-    :param end: End time in hours, 20 by default
+    :param start: Start time in hours (int) or time in format HH:MM (str), 9 by default
+    :param end: End time in hours (int) or time in format HH:MM (str), 20 by default
     """
+    def parse_time(time_input):
+        """Parse time input to get hour and minute"""
+        if isinstance(time_input, int):
+            return time_input, 0
+        elif isinstance(time_input, str):
+            try:
+                hour, minute = time_input.split(':')
+                return int(hour), int(minute)
+            except ValueError:
+                raise ValueError(f"Invalid time format: {time_input}")
+        else:
+            raise ValueError(f"Unsupported time type: {type(time_input)}")
+    
+    start_hour, start_minute = parse_time(start)
+    end_hour, end_minute = parse_time(end)
+    
     def decorator(func):
         def wrapper(*args, **kwargs):
             event = Event()
             event.set()
             while True:
-                if start <= int(time.strftime("%H")) <= end:
+                current_hour = int(time.strftime("%H"))
+                current_minute = int(time.strftime("%M"))
+                current_time_minutes = current_hour * 60 + current_minute
+                start_time_minutes = start_hour * 60 + start_minute
+                end_time_minutes = end_hour * 60 + end_minute
+                
+                if start_time_minutes <= current_time_minutes <= end_time_minutes:
                     if event.is_set():
                         event.clear()
                         kwargs["event"] = event
