@@ -39,7 +39,7 @@ def get_async_engine(pool_size: int | None = None) -> AsyncEngine:
     return async_engine_
 
 
-async def get_async_sessionmaker() -> async_sessionmaker:
+def get_async_sessionmaker() -> async_sessionmaker:
     """Create sqlalchemy async SessionMaker or return existing"""
     global async_sessionmaker_
     if not async_sessionmaker_:
