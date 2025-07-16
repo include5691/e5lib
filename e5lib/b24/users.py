@@ -2,6 +2,8 @@ import os
 import logging
 from ast import literal_eval
 
+from au_b24 import get_user, get_dep_name
+
 
 def get_dep_ids(user: dict) -> list[int] | None:
     """Get department IDs from user data."""
@@ -21,6 +23,20 @@ def get_dep_id(user: dict) -> int | None:
     if not dep_ids or not isinstance(dep_ids, list):
         return None
     return dep_ids[0]
+
+
+def get_dep_name_from_user(
+    user_id: int | str | None = None, user: dict | None = None
+) -> str | None:
+    if isinstance(user_id, dict):
+        user = user_id
+    user = user or get_user(user_id)
+    if not user:
+        return None
+    dep_id = get_dep_id(user)
+    if not dep_id:
+        return None
+    return get_dep_name(dep_id)
 
 
 def is_fired(user: dict) -> bool | None:
@@ -47,4 +63,3 @@ def is_in_prohibited_department(user: dict) -> bool | None:
     if dep_ids is None:
         return None
     return any(dep_id in prohibited_dep_ids for dep_id in dep_ids)
-    
