@@ -3,6 +3,8 @@ from sqlalchemy import Engine, create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine, async_sessionmaker
 
+DB_URL = os.getenv("DB_URL") or os.getenv("DB_AUTH_URL")
+
 engine_ = None
 sessionmaker_ = None
 async_engine_ = None
@@ -16,7 +18,7 @@ def get_engine(pool_size: int | None = None) -> Engine:
         kwargs = {"pool_pre_ping": True}
         if pool_size is not None:
             kwargs["pool_size"] = pool_size
-        engine_ = create_engine(os.getenv("DB_AUTH_URL"), **kwargs)
+        engine_ = create_engine(DB_URL, **kwargs)
     return engine_
 
 
@@ -35,7 +37,7 @@ def get_async_engine(pool_size: int | None = None) -> AsyncEngine:
         kwargs = {"pool_pre_ping": True}
         if pool_size is not None:
             kwargs["pool_size"] = pool_size
-        async_engine_ = create_async_engine(os.getenv("DB_AUTH_URL"), **kwargs)
+        async_engine_ = create_async_engine(DB_URL, **kwargs)
     return async_engine_
 
 
