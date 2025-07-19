@@ -27,7 +27,7 @@ def get_yesterday(date: str = None) -> str:
         timestamp = to_unix_time(date)
     else:
         timestamp = time.time()
-    unix_time = timestamp + 86400
+    unix_time = timestamp - 86400
     return time.strftime("%d.%m.%Y", time.localtime(unix_time))
 
 
