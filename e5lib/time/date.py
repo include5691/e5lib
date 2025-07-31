@@ -14,6 +14,15 @@ def create_date(timestamp: int) -> str:
     return time.strftime("%d.%m.%Y", time.localtime(timestamp))
 
 
+def create_timestamp(date: str) -> int | None:
+    """
+    Create unix timestamp from date string in %d.%m.%Y or full date format (ISO 8601)
+    """
+    if "." in date and len(date) == 10:
+        return int(time.mktime(time.strptime(date, "%d.%m.%Y")))
+    return to_unix_time(date)
+
+
 def get_today() -> str:
     "Create date from current time in %d.%m.%Y format"
     return time.strftime("%d.%m.%Y")
