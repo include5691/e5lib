@@ -3,7 +3,7 @@ from au_b24.funcs import get_leads, get_contacts
 from e5lib.funcs import phone_purge
 
 
-def get_phone_vars(phone: str | int, variants: str = "*"):
+def get_phone_vars(phone: str | int, variants: str = "*") -> list:
     """Return selected Russian-style formats for *p*.
 
     Variant map:
@@ -61,7 +61,7 @@ def get_leads_by_phone(
             leads_result.extend(leads)
 
     if search_by_contacts:
-        del filters["PHONE"]
+        filters.pop("PHONE", None)
         for entry in phone_list:
             contact_filters = {"PHONE": entry}
             contact_select = ["ID"]
