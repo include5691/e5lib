@@ -11,6 +11,7 @@ setup(
         'psycopg2-binary',
         'au_b24',
         'argparse',
-        'cachetools'
+        'cachetools',
+        'fastapi'
     ],
 )
