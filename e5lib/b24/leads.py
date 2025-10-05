@@ -68,13 +68,14 @@ def get_leads_by_phone(
             contacts = get_contacts(
                 filters=contact_filters, select=contact_select, order="DESC"
             )
-            for contact in contacts:
-                contact_id = contact.get("ID")
-                if contact_id:
-                    filters["CONTACT_ID"] = contact_id
-                    leads = get_leads(filters=filters, select=select, order="DESC")
-                    if leads:
-                        leads_result.extend(leads)
+            if contacts:
+                for contact in contacts:
+                    contact_id = contact.get("ID")
+                    if contact_id:
+                        filters["CONTACT_ID"] = contact_id
+                        leads = get_leads(filters=filters, select=select, order="DESC")
+                        if leads:
+                            leads_result.extend(leads)
     result = {}
     for lead in leads_result:
         lead_id = lead.get("ID")
